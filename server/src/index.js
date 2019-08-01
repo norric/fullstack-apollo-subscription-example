@@ -13,6 +13,10 @@ const typeDefs = gql`
     messages: [Message!]!
   }
 
+  type Mutation {
+    createMessage(content: String!): Message
+  }
+
   type Subscription {
     messageCreated: Message
   }
@@ -23,12 +27,20 @@ const typeDefs = gql`
   }
 `;
 
+const messages = [
+  { id: 0, content: 'Hello!' },
+  { id: 1, content: 'Bye!' },
+];
+
 const resolvers = {
   Query: {
-    messages: () => [
-      { id: 0, content: 'Hello!' },
-      { id: 1, content: 'Bye!' },
-    ],
+    messages: () => messages,
+  },
+  Mutation: {
+    createMessage: (parent, args, context, info) => {
+      console.log('createMessage', parent, args, context, info);
+      return addMessage(args.content);
+    },
   },
   Subscription: {
     messageCreated: {
@@ -51,12 +63,22 @@ httpServer.listen({ port: 8000 }, () => {
   console.log('Apollo Server on http://localhost:8000/graphql');
 });
 
-let id = 2;
+let id = messages.length;
 
-setInterval(() => {
+// TODO: async to actually add message before returning?
+const addMessage = content => {
+  const newMessage = {
+    id: id++,
+    content,
+  };
+  messages.push(newMessage);
   pubsub.publish(MESSAGE_CREATED, {
-    messageCreated: { id, content: new Date().toString() },
+    messageCreated: newMessage,
   });
 
-  id++;
-}, 1000);
+  return newMessage;
+};
+
+// setInterval(() => {
+// addMessage(new Date().toString());
+// }, 1000);
