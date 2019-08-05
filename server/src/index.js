@@ -2,31 +2,14 @@ import express from 'express';
 import { createServer } from 'http';
 import { PubSub } from 'apollo-server';
 import { ApolloServer, gql } from 'apollo-server-express';
+import typeDefs from './schema';
 
 const app = express();
 
 const pubsub = new PubSub();
 const MESSAGE_CREATED = 'MESSAGE_CREATED';
 
-const typeDefs = gql`
-  type Query {
-    messages: [Message!]!
-  }
-
-  type Mutation {
-    createMessage(content: String!): Message
-  }
-
-  type Subscription {
-    messageCreated: Message
-  }
-
-  type Message {
-    id: String
-    content: String
-  }
-`;
-
+// TODO: to be replaced with proper persistent storage
 const messages = [
   { id: 0, content: 'Hello!' },
   { id: 1, content: 'Bye!' },

@@ -1,5 +1,5 @@
 {
-  "name": "apollo-server-subscription-setup-example",
+  "name": "planning-poker-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "keywords": [],
-  "author": "“Robin <rwieruch@fastmail.com> (https://www.robinwieruch.de)",
+  "author": "Rickard Nordstrand <rickard.nordstrand@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^2.1.0",
