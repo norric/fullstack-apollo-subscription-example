@@ -19,6 +19,7 @@ import { gql } from 'apollo-server';
 //   }
 // `;
 
+// TODO: use ID scalar?
 const typeDefs = gql`
   type Poll {
     id: Int!
@@ -32,12 +33,13 @@ const typeDefs = gql`
     points: Float!
   }
 
-  type Mutation {
-    createPoll(name: String!, description: String!): Poll
+  type Query {
+    polls: [Poll]
   }
 
   type Mutation {
-    voteOnPoll(id: Int!, user: String!, points: Float!): Poll
+    createPoll(name: String!, description: String!): Poll
+    castVote(id: Int!, user: String!, points: Float!): Poll
   }
 
   type Subscription {
