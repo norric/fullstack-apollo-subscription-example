@@ -1,28 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-const GET_MESSAGES = gql`
+// TODO: separate into queries?
+const GET_POLLS = gql`
   query {
-    messages {
+    polls {
       id
-      content
+      name
+      description
     }
   }
 `;
 
-const MESSAGE_CREATED = gql`
+const POLL_UPDATED = gql`
   subscription {
-    messageCreated {
+    pollUpdated {
       id
-      content
+      name
+      description
     }
   }
 `;
 
 const App = () => (
-  <Query query={GET_MESSAGES}>
+  <Query query={GET_POLLS}>
     {({ data, loading, subscribeToMore }) => {
+      console.log('data', data);
       if (!data) {
         return null;
       }
@@ -32,27 +37,22 @@ const App = () => (
       }
 
       return (
-        <Messages
-          messages={data.messages}
-          subscribeToMore={subscribeToMore}
-        />
+        <Polls polls={data.polls} subscribeToMore={subscribeToMore} />
       );
     }}
   </Query>
 );
 
-class Messages extends React.Component {
+// TODO: functional comps
+class Polls extends React.Component {
   componentDidMount() {
     this.props.subscribeToMore({
-      document: MESSAGE_CREATED,
+      document: POLL_UPDATED,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
 
         return {
-          messages: [
-            ...prev.messages,
-            subscriptionData.data.messageCreated,
-          ],
+          polls: [...prev.polls, subscriptionData.data.pollUpdated],
         };
       },
     });
@@ -60,11 +60,14 @@ class Messages extends React.Component {
 
   render() {
     return (
-      <ul>
-        {this.props.messages.map(message => (
-          <li key={message.id}>{message.content}</li>
-        ))}
-      </ul>
+      <div>
+        <h1>Polls</h1>
+        <ul>
+          {this.props.polls.map(poll => (
+            <li key={poll.id}>{JSON.stringify(poll)}</li>
+          ))}
+        </ul>
+      </div>
     );
   }
 }
