@@ -22,15 +22,18 @@ const polls = [
 ];
 
 const createPoll = content => {
+  console.log('content', content);
   const newPoll = {
-    id: polls.length++,
+    id: polls.length,
     ...content,
     votes: [],
   };
+  console.log('newPoll', newPoll);
   polls.push(newPoll);
   pubsub.publish(POLL_UPDATED, {
     pollUpdated: newPoll,
   });
+  return newPoll;
 };
 
 // TODO: async to actually add message before returning?
@@ -56,12 +59,12 @@ const resolvers = {
   },
   Mutation: {
     createPoll: (parent, args, context, info) => {
-      console.log('createPoll', parent, args, context, info);
-      return createPoll(args.content);
+      // console.log('createPoll', parent, args, context, info);
+      return createPoll(args);
     },
     castVote: (parent, args, context, info) => {
-      console.log('createPoll', parent, args, context, info);
-      return castVote(args.content);
+      // console.log('createPoll', parent, args, context, info);
+      return castVote(args);
     },
   },
   Subscription: {
