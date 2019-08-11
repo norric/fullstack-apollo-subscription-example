@@ -6,6 +6,10 @@ export const GET_POLLS = gql`
       id
       name
       description
+      votes {
+        user
+        points
+      }
     }
   }
 `;
@@ -16,6 +20,10 @@ export const POLL_UPDATED = gql`
       id
       name
       description
+      votes {
+        user
+        points
+      }
     }
   }
 `;
@@ -28,12 +36,15 @@ export const CREATE_POLL = gql`
   }
 `;
 
-// export const CAST_VOTE = gql`
-//   mutation {
-//     castVote(id: Int!, user: String!, points: Float!) {
-//       id
-//       user
-//       points
-//     }
-//   }
-// `;
+export const CAST_VOTE = gql`
+  mutation CastVote($id: Int!, $user: String!, $points: Float!) {
+    castVote(id: $id, user: $user, points: $points) {
+      id
+      name
+      votes {
+        user
+        points
+      }
+    }
+  }
+`;
