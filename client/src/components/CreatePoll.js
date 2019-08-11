@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-
-// TODO: keep graphql here or in parent?
+import { Link } from 'react-router-dom';
 
 function CreatePoll({ onCreatePoll, history }) {
-  const [pollData, setPollData] = useState({});
+  const [pollData, setPollData] = useState({
+    name: '',
+    description: '',
+  });
   const [isDirty, setDirty] = useState(false);
-  const [isBusy, setBusy] = useState(false);
 
   return (
     <div>
@@ -21,20 +21,22 @@ function CreatePoll({ onCreatePoll, history }) {
         }}
         onSubmit={async e => {
           e.preventDefault();
-          console.log('pollData submit', pollData);
-          await onCreatePoll({ variables: { ...pollData } });
-          history.push('/');
+          console.debug('pollData submit', pollData);
+          const { data } = await onCreatePoll({
+            variables: { ...pollData },
+          });
+          const newId = data.createPoll.id;
+          history.push(`/poll/${newId}`);
         }}
       >
         <div>
           <label>
-            Name: <input type="text" name="name" disabled={isBusy} />
+            Name: <input type="text" name="name" />
           </label>
         </div>
         <div>
           <label>
-            Description:{' '}
-            <input type="text" name="description" disabled={isBusy} />
+            Description: <input type="text" name="description" />
           </label>
         </div>
         <button type="submit" disabled={!isDirty}>
