@@ -1,21 +1,11 @@
 import React from 'react';
-import { useQuery, useMutation } from 'react-apollo';
-import {
-  GET_POLLS,
-  POLL_UPDATED,
-  CREATE_POLL,
-  // CAST_VOTE,
-} from './queries';
+import { useQuery } from 'react-apollo';
+import { GET_POLLS, POLL_UPDATED } from './queries';
+
 import AppRouter from './components/AppRouter';
 
 const App = () => {
   const { data, loading, subscribeToMore } = useQuery(GET_POLLS);
-  const [
-    createPoll,
-    { loading: mutationLoading, error: mutationError },
-  ] = useMutation(CREATE_POLL);
-
-  console.log('data', data);
   if (!data) {
     return null;
   }
@@ -41,7 +31,6 @@ const App = () => {
           },
         })
       }
-      createPoll={createPoll}
     />
   );
 };

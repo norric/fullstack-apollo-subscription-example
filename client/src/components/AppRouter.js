@@ -45,12 +45,7 @@ function AppRouter({ polls, subscribeToPolls, createPoll }) {
         />
         <Route
           path="/create"
-          render={props => (
-            <CreatePoll
-              onCreatePoll={createPoll}
-              history={props.history}
-            />
-          )}
+          render={props => <CreatePoll history={props.history} />}
         />
         <Route
           path="/poll/:id"

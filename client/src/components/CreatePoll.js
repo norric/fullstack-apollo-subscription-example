@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMutation } from 'react-apollo';
+import { CREATE_POLL } from '../queries';
 
-function CreatePoll({ onCreatePoll, history }) {
+function CreatePoll({ history }) {
   const [pollData, setPollData] = useState({
     name: '',
     description: '',
   });
   const [isDirty, setDirty] = useState(false);
+  const [
+    createPoll,
+    // { loading: mutationLoading, error: mutationError },
+  ] = useMutation(CREATE_POLL);
 
   return (
     <div>
@@ -22,7 +28,7 @@ function CreatePoll({ onCreatePoll, history }) {
         onSubmit={async e => {
           e.preventDefault();
           console.debug('pollData submit', pollData);
-          const { data } = await onCreatePoll({
+          const { data } = await createPoll({
             variables: { ...pollData },
           });
           const newId = data.createPoll.id;
