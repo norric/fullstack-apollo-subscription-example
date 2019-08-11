@@ -1,6 +1,4 @@
 import { gql } from 'apollo-server';
-
-// TODO: use ID scalar?
 const typeDefs = gql`
   type Poll {
     id: Int!

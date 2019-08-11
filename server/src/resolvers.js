@@ -2,33 +2,38 @@ import { PubSub } from 'apollo-server';
 const POLL_UPDATED = 'POLL_UPDATED';
 const pubsub = new PubSub();
 
-// TODO: to be replaced with proper persistent storage
-
-// TODO: obj? immutable records?
+// TODO: to be replaced with proper persistent storage (e.g. mongo)
 const polls = [
-  // TODO: randomize nice ids
+  // TODO: we could add more stuff, like
+  // timestamp, author, nicer alpha IDs etc
   {
     id: 0,
     name: 'Test poll 1',
     description: 'test description 1',
-    votes: [],
+    votes: [
+      { user: 'Rickard', points: 3 },
+      { user: 'user2', points: 10 },
+    ],
   },
   {
     id: 1,
     name: 'Test poll 2',
     description: 'test description 2',
-    votes: [],
+    votes: [
+      { user: 'test', points: 1 },
+      { user: 'Rickard', points: 0 },
+    ],
   },
 ];
 
 const createPoll = content => {
-  console.log('content', content);
+  console.debug('content', content);
   const newPoll = {
     id: polls.length,
     ...content,
     votes: [],
   };
-  console.log('newPoll', newPoll);
+  console.debug('newPoll', newPoll);
   polls.push(newPoll);
   pubsub.publish(POLL_UPDATED, {
     pollUpdated: newPoll,
@@ -36,15 +41,22 @@ const createPoll = content => {
   return newPoll;
 };
 
-// TODO: async to actually add message before returning?
-const castVote = content => {
-  const poll = polls.find(p => p.id === content.id);
+const castVote = update => {
+  const poll = polls.find(p => p.id === update.id);
+  const existing = poll.votes.find(v => v.user === update.user);
+  if (existing) {
+    console.debug(
+      `${update.user} already voted. new value: ${update.points}`,
+    );
+    existing.points = update.points;
+  } else {
+    console.debug(
+      `${update.user} cast a new vote. value: ${update.points}`,
+    );
+    poll.votes.push(update);
+  }
 
-  // TODO: include vote, update if already exists etc
-  // let currentVote = poll.votes.find(v => v.name === content.name);
-  // if(!currentVote) {
-  //   currentVote = content;
-  // }
+  console.debug('updated poll', poll);
 
   pubsub.publish(POLL_UPDATED, {
     pollUpdated: poll,
@@ -58,14 +70,8 @@ const resolvers = {
     polls: () => polls,
   },
   Mutation: {
-    createPoll: (parent, args, context, info) => {
-      // console.log('createPoll', parent, args, context, info);
-      return createPoll(args);
-    },
-    castVote: (parent, args, context, info) => {
-      // console.log('createPoll', parent, args, context, info);
-      return castVote(args);
-    },
+    createPoll: (parent, args, context, info) => createPoll(args),
+    castVote: (parent, args, context, info) => castVote(args),
   },
   Subscription: {
     pollUpdated: {
@@ -73,11 +79,5 @@ const resolvers = {
     },
   },
 };
-
-// for testing subs
-
-// setInterval(() => {
-// addMessage(new Date().toString());
-// }, 1000);
 
 module.exports = resolvers;
