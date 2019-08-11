@@ -6,7 +6,7 @@ import {
   CREATE_POLL,
   // CAST_VOTE,
 } from './queries';
-import { Polls } from './Polls';
+import AppRouter from './components/AppRouter';
 
 const App = () => {
   const { data, loading, subscribeToMore } = useQuery(GET_POLLS);
@@ -25,7 +25,7 @@ const App = () => {
   }
 
   return (
-    <Polls
+    <AppRouter
       polls={data.polls}
       subscribeToPolls={() =>
         subscribeToMore({
