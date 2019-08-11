@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function ListPolls({ polls, createPoll }) {
-  console.log('polls', polls);
+// TODO: indicate on which ones you've cast a vote
+function ListPolls({ polls }) {
   return (
     <div>
       <h1>Polls</h1>
       <Link to="/create">
-        <button>Add poll...</button>
+        <button>Create poll...</button>
       </Link>
       <ol>
-        {/* TODO this is actually indices as we're on an array */}
-        {polls.map(({ name, description }, id) => {
+        {polls.map(({ id, name, description }) => {
           return (
-            <Link key={id} to={`/poll/${id}`}>
-              <li>{name}</li>
-            </Link>
+            <li>
+              <Link key={id} to={`/poll/${id}`}>
+                {name}
+              </Link>
+            </li>
           );
         })}
       </ol>
