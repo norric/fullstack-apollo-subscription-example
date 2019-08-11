@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 // TODO: indicate on which ones you've cast a vote
@@ -12,10 +12,8 @@ function ListPolls({ polls }) {
       <ol>
         {polls.map(({ id, name, description }) => {
           return (
-            <li>
-              <Link key={id} to={`/poll/${id}`}>
-                {name}
-              </Link>
+            <li key={id}>
+              <Link to={`/poll/${id}`}>{name}</Link>
             </li>
           );
         })}

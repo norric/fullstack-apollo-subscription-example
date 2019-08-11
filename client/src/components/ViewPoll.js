@@ -6,18 +6,18 @@ import { CAST_VOTE } from '../queries';
 function EditVote({ poll, user, points }) {
   const [
     castVote,
-    { loading: mutationLoading, error: mutationError },
+    // { loading: mutationLoading, error: mutationError },
   ] = useMutation(CAST_VOTE);
 
   const options = [0, 0.5, 1, 2, 3, 5, 8, 13];
   return (
-    <li>
+    <div>
       <b>{user} (you): </b>
       <span>
         <select
           required
           value={points}
-          onChange={() => {
+          onChange={e => {
             castVote({
               variables: {
                 id: poll.id,
@@ -34,7 +34,7 @@ function EditVote({ poll, user, points }) {
           ))}
         </select>
       </span>
-    </li>
+    </div>
   );
 }
 
@@ -71,7 +71,7 @@ function ViewPoll({ id, polls, userName }) {
           </li>
           {(poll.votes || []).map(vote => {
             if (vote.user === userName) {
-              return;
+              return null;
             }
             return (
               <li key={vote.user}>
