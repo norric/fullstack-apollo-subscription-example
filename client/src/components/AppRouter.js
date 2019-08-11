@@ -1,16 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Route,
-  Link,
   Switch,
   BrowserRouter as Router,
 } from 'react-router-dom';
+
+import SignIn from './SignIn';
 import ListPolls from './ListPolls';
 import CreatePoll from './CreatePoll';
 import ViewPoll from './ViewPoll';
+import SignOut from './SignOut';
 
 function AppRouter({ polls, subscribeToPolls, createPoll }) {
-  // const { params } = match;
+  const [userName, setUserName] = useState(
+    sessionStorage.getItem('userName'),
+  );
+
   useEffect(() => {
     const unsubscribe = subscribeToPolls();
     return function cleanUp() {
@@ -18,13 +23,25 @@ function AppRouter({ polls, subscribeToPolls, createPoll }) {
     };
   });
 
+  if (!userName) {
+    return <SignIn signInAs={setUserName} />;
+  }
+
   return (
     <Router>
       <Switch>
         <Route
           exact
           path="/"
-          render={() => <ListPolls polls={polls} />}
+          render={() => (
+            <>
+              <ListPolls polls={polls} />
+              <SignOut
+                userName={userName}
+                setUserName={setUserName} // TODO: signOut func?
+              />
+            </>
+          )}
         />
         <Route
           path="/create"
@@ -37,8 +54,12 @@ function AppRouter({ polls, subscribeToPolls, createPoll }) {
         />
         <Route
           path="/poll/:id"
-          render={props => (
-            <ViewPoll polls={polls} id={props.match.params.id} />
+          render={({ match }) => (
+            <ViewPoll
+              polls={polls}
+              id={match.params.id}
+              userName={userName}
+            />
           )}
         />
         <Route component={() => 'Not found'} />
