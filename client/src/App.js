@@ -22,11 +22,16 @@ const App = () => {
           document: POLL_UPDATED,
           updateQuery: (prev, { subscriptionData }) => {
             if (!subscriptionData.data) return prev;
+            const update = subscriptionData.data.pollUpdated;
+            const existing = prev.polls.find(p => p.id === update.id);
+            if (existing) {
+              existing.polls = update.polls;
+              return {
+                polls: prev.polls,
+              };
+            }
             return {
-              polls: [
-                ...prev.polls,
-                subscriptionData.data.pollUpdated,
-              ],
+              polls: [...prev.polls, update],
             };
           },
         })
