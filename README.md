@@ -18,7 +18,7 @@ Code is based on [fullstack-apollo-subscription-example](https://github.com/the-
 - `cd client`
 - `npm install`
 - `npm start`
-- Browser should automatically open `http://localhost:3000`
+- Browser should automatically open http://localhost:3000
 
 ### Example usage
 
