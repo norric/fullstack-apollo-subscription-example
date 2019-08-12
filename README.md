@@ -2,7 +2,7 @@
 
 Fullstack proof of concept app, using GraphQL and subscriptions over websocket.
 
-Code is based on [fullstack-apollo-subscription-example](https://github.com/the-road-to-graphql/)fullstack-apollo-subscription-example] providing a minimal Apollo Server and Client application with subscriptions, and [create-react-app](https://github.com/facebook/create-react-app) for the client environment.
+Code is based on [fullstack-apollo-subscription-example](https://github.com/the-road-to-graphql/) providing a minimal Apollo Server and Client application with subscriptions, and [create-react-app](https://github.com/facebook/create-react-app) for the client environment.
 
 ## Installation
 
