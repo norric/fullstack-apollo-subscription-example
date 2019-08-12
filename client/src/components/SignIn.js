@@ -7,7 +7,7 @@ function SignIn({ signInAs }) {
   return (
     <div>
       <h1>Welcome to Planning Poker</h1>
-      <p>Please sign in:</p>
+      <p>Please sign in</p>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -16,7 +16,7 @@ function SignIn({ signInAs }) {
           signInAs(userName);
         }}
       >
-        <div>
+        <div className="form-group">
           <label>
             Your name:{' '}
             <input
@@ -24,11 +24,16 @@ function SignIn({ signInAs }) {
               name="username"
               value={userName}
               onChange={e => setUserName(e.target.value)}
+              className="form-control"
             />
           </label>
         </div>
-        <div>
-          <button type="submit" disabled={!userName}>
+        <div className="form-group">
+          <button
+            type="submit"
+            disabled={!userName}
+            className="btn btn-primary"
+          >
             Sign in
           </button>
         </div>

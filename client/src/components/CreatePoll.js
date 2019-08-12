@@ -11,12 +11,13 @@ function CreatePoll({ history }) {
   const [isDirty, setDirty] = useState(false);
   const [
     createPoll,
+    // TODO: error handling
     // { loading: mutationLoading, error: mutationError },
   ] = useMutation(CREATE_POLL);
 
   return (
     <div>
-      <h1>Create poll</h1>
+      <h2>Create poll</h2>
       <form
         onChange={e => {
           setPollData({
@@ -35,24 +36,33 @@ function CreatePoll({ history }) {
           history.push(`/poll/${newId}`);
         }}
       >
-        <div>
+        <div className="form-group">
           <label>
-            Name: <input type="text" name="name" />
+            Name:{' '}
+            <input className="form-control" type="text" name="name" />
           </label>
         </div>
-        <div>
+        <div className="form-group">
           <label>
-            Description: <input type="text" name="description" />
+            Description:{' '}
+            <input
+              className="form-control"
+              type="text"
+              name="description"
+            />
           </label>
         </div>
-        <button type="submit" disabled={!isDirty}>
+        <button className="btn" type="submit">
+          <Link to={'/'}>Back</Link>
+        </button>
+        <button
+          className="btn btn-primary"
+          type="submit"
+          disabled={!isDirty}
+        >
           Save
         </button>
       </form>
-
-      <p>
-        <Link to={'/'}>Back...</Link>
-      </p>
     </div>
   );
 }

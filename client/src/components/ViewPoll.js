@@ -6,6 +6,7 @@ import { CAST_VOTE } from '../queries';
 function EditVote({ poll, user, points }) {
   const [
     castVote,
+    // TODO: error handling
     // { loading: mutationLoading, error: mutationError },
   ] = useMutation(CAST_VOTE);
 
@@ -15,6 +16,8 @@ function EditVote({ poll, user, points }) {
       <b>{user} (you): </b>
       <span>
         <select
+          className="form-control"
+          style={{ display: 'inline', width: 'auto' }}
           required
           value={points}
           onChange={e => {
@@ -44,7 +47,9 @@ function ViewPoll({ id, polls, userName }) {
     return (
       <div>
         <p>Poll not found</p>
-        <Link to={'/'}>Go back...</Link>
+        <button className="btn">
+          <Link to={'/'}>Go back...</Link>
+        </button>
       </div>
     );
   }
@@ -56,14 +61,11 @@ function ViewPoll({ id, polls, userName }) {
 
   return (
     <div>
-      <h1>View poll</h1>
-      <div>
-        <label>Name: {poll.name}</label>
+      <h2>{poll.name}</h2>
+      <div className="form-group">
+        <label>{poll.description}</label>
       </div>
-      <div>
-        <label>Description: {poll.description}</label>
-      </div>
-      <div>
+      <div className="form-group">
         <label>Votes:</label>
         <ul>
           <li>
@@ -83,7 +85,9 @@ function ViewPoll({ id, polls, userName }) {
       </div>
 
       <div>
-        <Link to={'/'}>Back...</Link>
+        <button className="btn">
+          <Link to={'/'}>Back</Link>
+        </button>
       </div>
     </div>
   );

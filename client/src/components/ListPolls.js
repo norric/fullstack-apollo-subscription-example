@@ -5,19 +5,21 @@ import { Link } from 'react-router-dom';
 function ListPolls({ polls }) {
   return (
     <div>
-      <h1>Polls</h1>
+      <h2>Polls</h2>
       <Link to="/create">
-        <button>Create poll...</button>
+        <button className="btn btn-primary">Create poll...</button>
       </Link>
-      <ol>
-        {polls.map(({ id, name, description }) => {
-          return (
-            <li key={id}>
-              <Link to={`/poll/${id}`}>{name}</Link>
-            </li>
-          );
-        })}
-      </ol>
+      <div className="m-2">
+        <ol>
+          {polls.map(({ id, name, description }) => {
+            return (
+              <li key={id}>
+                <Link to={`/poll/${id}`}>{name}</Link>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </div>
   );
 }

@@ -38,7 +38,7 @@ function AppRouter({ polls, subscribeToPolls, createPoll }) {
               <ListPolls polls={polls} />
               <SignOut
                 userName={userName}
-                setUserName={setUserName} // TODO: signOut func?
+                setUserName={setUserName}
               />
             </>
           )}

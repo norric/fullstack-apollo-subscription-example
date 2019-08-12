@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { GET_POLLS, POLL_UPDATED } from './queries';
-
+import './App.scss';
 import AppRouter from './components/AppRouter';
 
 const App = () => {
